@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "LMS Modal Blocker",
+  "version": "1.0.0",
+  "description": "Blocks lms.tuit.uz attendance modal dialog.",
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://lms.tuit.uz/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
