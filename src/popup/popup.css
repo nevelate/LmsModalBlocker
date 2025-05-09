@@ -1,57 +1,145 @@
-/* The switch - the box around the slider */
+* {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+:root {
+	--hue: 223;
+	--bg: hsl(var(--hue),10%,90%);
+	--fg: hsl(var(--hue),10%,10%);
+	--primary: hsl(var(--hue),90%,50%);
+	--primary-t: hsla(var(--hue),90%,50%,0);
+	--unchecked: hsl(var(--hue),10%,70%);
+	--checked: hsl(133,70%,40%);
+	--trans-dur: 0.4s;
+	--trans-timing1: cubic-bezier(0.65,0,0.35,1);
+	--trans-timing2: cubic-bezier(0.68,-0.6,0.32,1.6);
+	font-size: calc(40px + (80 - 40) * (100vw - 320px) / (2560 - 320));
+}
+body,
+input {
+	color: var(--fg);
+	font: 1em/1.5 sans-serif;
+	transition:
+		background-color var(--trans-dur),
+		color var(--trans-dur);
+}
+body {
+	background-color: var(--bg);
+	display: flex;
+	height: 100vh;
+    padding: 1em 1em 2.5em 1em;
+}
+.switch,
+.switch__input {
+	-webkit-tap-highlight-color: transparent;
+}
 .switch {
-    margin-left: 30%; /* Center the switch */
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+	display: flex;
+	align-items: center;
+	margin: auto;
+}
+.switch__input {
+	background-color: var(--unchecked);
+	border-radius: 0.75em;
+	box-shadow: 0 0 0 0.125em var(--primary-t);
+	outline: transparent;
+	position: relative;
+	width: 2.25em;
+	height: 1.5em;
+	transition:
+		background-color var(--trans-dur) var(--trans-timing1),
+		box-shadow 0.15s var(--trans-timing1),
+		transform var(--trans-dur) var(--trans-timing2);
+	-webkit-appearance: none;
+	appearance: none;
+}
+.switch__input:focus-visible {
+	box-shadow: 0 0 0 0.125em var(--primary);
+}
+.switch__input:before {
+	background-color: var(--bg);
+	border-radius: 50%;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0.25em;
+	left: 0.25em;
+	transition:
+		background-color var(--trans-dur),
+		transform var(--trans-dur) var(--trans-timing2);
+	width: 1em;
+	height: 1em;
+}
+.switch__letters,
+.switch__letter {
+	transition: transform var(--trans-dur) var(--trans-timing2);
+}
+.switch__letters {
+	margin-left: 0.375em;
+	overflow: visible;
+	pointer-events: none;
+	width: 1.5em;
+	height: 1.5em;
+}
+.switch__letter:last-child {
+	transform: translateX(14px);
+}
+.switch__letter-stroke {
+	stroke: var(--unchecked);
+	transition:
+		stroke var(--trans-dur) var(--trans-timing1),	
+		stroke-dashoffset var(--trans-dur) var(--trans-timing2),
+		transform var(--trans-dur) var(--trans-timing2);
+}
+.switch__letter-stroke:nth-child(2) {
+	transform-origin: 2px 2px;
+}
+.switch__text {
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+	height: 1px;
 }
 
-/* Hide default HTML checkbox */
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+/* “on” state */
+.switch__input:checked {
+	background-color: var(--checked);
+}
+.switch__input:checked,
+.switch__input:checked + .switch__letters {
+	transform: translateX(0.375em);
+}
+.switch__input:checked:before {
+	transform: translateX(0.75em);
+}
+.switch__input:checked ~ .switch__letters .switch__letter-stroke {
+	stroke: var(--checked);
+}
+.switch__input:checked ~ .switch__letters .switch__letter-stroke:nth-child(2) {
+	stroke-dashoffset: 6;
+}
+.switch__input:checked ~ .switch__letters .switch__letter-stroke:last-child {
+	stroke-dashoffset: 4;
+}
+.switch__input:checked ~ .switch__letters .switch__letter:first-child .switch__letter-stroke:nth-child(2) {
+	stroke-dashoffset: 0;
+	transform: rotate(56.5deg);
+}
+.switch__input:checked ~ .switch__letters .switch__letter:last-child {
+	stroke-dashoffset: 0;
+	transform: translateX(8px);
 }
 
-/* The slider */
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-}
-
-.slider::before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px); /* Move the slider to the right when checked */
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round::before {
-    border-radius: 50%;
-}
-
-.secret {
-    margin: 5px;
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: hsl(var(--hue),10%,10%);
+		--fg: hsl(var(--hue),10%,90%);
+		--primary: hsl(var(--hue),90%,60%);
+		--primary-t: hsla(var(--hue),90%,60%,0);
+		--unchecked: hsl(var(--hue),10%,30%);
+		--checked: hsl(133,70%,50%);
+	}
 }

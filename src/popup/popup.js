@@ -5,8 +5,7 @@ function setBadgeText(enabled) {
     void chrome.action.setBadgeText({text: text})
 }
 
-// Handle the ON/OFF switch
-const checkbox = document.getElementById("enabled")
+const checkbox = document.getElementById("switch")
 chrome.storage.sync.get("enabled", (data) => {
     checkbox.checked = !!data.enabled
     void setBadgeText(data.enabled)
